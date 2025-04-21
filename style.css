@@ -1,0 +1,69 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: "Barriecito", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .contenedor {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;  /* Espacio entre el tablero y los controles */
+  }
+
+  .tablero {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .tablero-contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Esto centra el tablero y el botón */
+    gap: 10px; /* Espacio entre el tablero y el botón */
+  }
+
+  .letra {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border: 2px solid #333;
+    font-size: 24px;
+    font-weight: bold;
+    background: #f0f0f0;
+    transform-origin: center center;
+  }
+
+  #reloj {
+    font-size: 40px;
+    margin-bottom: 1rem;
+    text-align: center;  /* Centra el texto del reloj */
+    font-weight: bold;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+  }
+
+  .contenedorHorizontal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
