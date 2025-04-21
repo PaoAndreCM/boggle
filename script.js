@@ -1,33 +1,3 @@
-// // const letras = [
-// //   'A','A','A','A','A','A','A','A','A','A',
-// //   'E','E','E','E','E','E','E','E','E',
-// //   'O','O','O','O','O','O','O',
-// //   'S','S','S','S','S','S',
-// //   'N','N','N','N','N',
-// //   'R','R','R','R','R',
-// //   'I','I','I','I','I',
-// //   'L','L','L','L',
-// //   'D','D','D','D',
-// //   'C','C','C',
-// //   'T','T','T',
-// //   'U','U','U',
-// //   'M','M','M',
-// //   'P','P','P',
-// //   'B','B',
-// //   'G','G',
-// //   'V','V',
-// //   'Y','Y',
-// //   'Qu',
-// //   'H',
-// //   'F',
-// //   'Z',
-// //   'J',
-// //   'Ñ',
-// //   'X',
-// //   'K',
-// //   'W'
-// // ];
-
 // // Frecuencia de aparición de letras en español según Wikipedia https://es.wikipedia.org/wiki/Frecuencia_de_aparici%C3%B3n_de_letras
 // const letrasFrecuencia = [
 //   { letra: 'E', frecuencia: 13.68 },
@@ -68,6 +38,8 @@
 //   }
 // });
 
+let seleccionHabilitada = false;
+
 let palabrasValidas = [];
 
 fetch('palabras.json')
@@ -81,23 +53,28 @@ let letrasSeleccionadas = [];
 let filasActual = 4;
 let columnasActual = 4;
 
+let puntaje = 0;
+
 
 function manejarSeleccion(div, index) {
+
+    reiniciarValidez();
+
     const fila = Math.floor(index / columnasActual);
     // console.log("fila: ", fila)
     
     const col = index % columnasActual;
     // console.log("col: ", col)
-  
-    // Si ya fue seleccionada, y es la ultima en la lista, confirmar palabra
-    if (
-        letrasSeleccionadas.length > 0 &&
-        index === letrasSeleccionadas[letrasSeleccionadas.length - 1].index
-      ) {
+    
+    const ultimaSeleccion = letrasSeleccionadas[letrasSeleccionadas.length - 1];
+
+    if (letrasSeleccionadas.some(l => l.index === index)) {
+      if (ultimaSeleccion && ultimaSeleccion.index === index) {
         confirmarPalabra();
-        return; 
       }
-      
+      return; // Ya fue seleccionada, no continuar
+    }
+    
   
     // Si no es la primera letra, validar adyacencia
     if (letrasSeleccionadas.length > 0) {
@@ -128,9 +105,15 @@ function manejarSeleccion(div, index) {
     if (palabraActual.length < 2) return;
   
     const palabra = palabraActual.join("");
-    console.log("Palabra creada:", palabra);
+    // console.log("Palabra creada:", palabra);
     
     const validezDiv = document.getElementById("validez");
+
+    if (palabraActual.length == 2) {
+        validezDiv.textContent = "La palabra es muy corta"
+        reiniciarPalabra();
+        return;
+    }
 
     if(palabrasValidas.includes(palabra.toLowerCase()) ){
         validezDiv.textContent = "La palabra es válida";
@@ -153,7 +136,10 @@ function manejarSeleccion(div, index) {
     letrasSeleccionadas = [];
   }
   
-  
+  function reiniciarValidez(){
+    const validezDiv = document.getElementById("validez");
+    validezDiv.textContent = "";
+  }
 
 let minutos = 2;
 let intervalo = null;
@@ -165,6 +151,13 @@ function ajustarMinutos(cambio) {
 
 function iniciarTemporizador() {
     clearInterval(intervalo);
+
+    // Revelar las letras y habilitar seleccion
+    document.querySelectorAll(".letra").forEach(div => {
+        div.classList.remove("oculta");
+      });
+    seleccionHabilitada = true;
+
 
     // Desactivar botones
     document.querySelectorAll("button").forEach(btn => {
@@ -186,6 +179,7 @@ function iniciarTemporizador() {
         reloj.textContent = "¡Tiempo!";
         document.getElementById("alarma").play();
 
+
         // Rehabilitar botones
     document.querySelectorAll("button").forEach(btn => {
     if (btn.textContent === "+" || btn.textContent === "-") {
@@ -204,10 +198,6 @@ function actualizarReloj(segundos) {
     document.getElementById("reloj").textContent =
     `${m}:${s.toString().padStart(2, "0")}`;
 }
-
-// function obtenerLetraAleatoria() {
-//   return letrasPonderadas[Math.floor(Math.random() * letrasPonderadas.length)];
-// }
 
 function generarTablero(filas = 4, columnas = 4) {
     // Reiniciar el temporizador si hay uno activo
@@ -228,6 +218,10 @@ function generarTablero(filas = 4, columnas = 4) {
     }
     });
 
+    // Reiniciar palabrar
+    reiniciarPalabra();
+    actualizarPalabraEnPantalla();
+
 const totalLetras = filas * columnas;
 const numVocales = Math.round(totalLetras * 0.4);
 const numComunes = Math.round(totalLetras * 0.5);
@@ -246,16 +240,16 @@ function elegirAleatorias(arr, cantidad) {
     return seleccionadas;
 }
 
-const letrasSeleccionadas = [
+const letrasParaTablero = [
     ...elegirAleatorias(vocales, numVocales),
     ...elegirAleatorias(comunes, numComunes),
     ...elegirAleatorias(raras, numRaras)
 ];
 
 // Mezclar las letras
-for (let i = letrasSeleccionadas.length - 1; i > 0; i--) {
+for (let i = letrasParaTablero.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [letrasSeleccionadas[i], letrasSeleccionadas[j]] = [letrasSeleccionadas[j], letrasSeleccionadas[i]];
+    [letrasParaTablero[i], letrasParaTablero[j]] = [letrasParaTablero[j], letrasParaTablero[i]];
 }
 
     // Generar tablero
@@ -264,13 +258,19 @@ for (let i = letrasSeleccionadas.length - 1; i > 0; i--) {
     tablero.style.gridTemplateRows = `repeat(${filas}, 60px)`;
     tablero.innerHTML = "";
 
+    seleccionHabilitada = false;
+
     for (let i = 0; i < totalLetras; i++) {
         const div = document.createElement("div");
         div.className = "letra";
+        div.classList.add("oculta");
         const rotacion = [0, 90, 180, 270][Math.floor(Math.random() * 4)];
         div.style.transform = `rotate(${rotacion}deg)`;
-        div.textContent = letrasSeleccionadas[i];
-        div.addEventListener("click", () => manejarSeleccion(div, i));
+        div.textContent = letrasParaTablero[i];
+        div.addEventListener("click", () => {
+            if (!seleccionHabilitada) return;
+            manejarSeleccion(div, i);
+        });
 
         tablero.appendChild(div);
     }

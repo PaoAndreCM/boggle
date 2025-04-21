@@ -74,6 +74,11 @@ body {
     color: #023047;
   }
 
+  .letra.oculta {
+    background-color: #000000;
+    color: #000000;
+  }
+
   #palabraActual {
     display: flex;
     justify-content: center;
