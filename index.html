@@ -108,35 +108,75 @@
   
 
   <script>
-    const letras = [
-      'A','A','A','A','A','A','A','A','A','A',
-      'E','E','E','E','E','E','E','E','E',
-      'O','O','O','O','O','O','O',
-      'S','S','S','S','S','S',
-      'N','N','N','N','N',
-      'R','R','R','R','R',
-      'I','I','I','I','I',
-      'L','L','L','L',
-      'D','D','D','D',
-      'C','C','C',
-      'T','T','T',
-      'U','U','U',
-      'M','M','M',
-      'P','P','P',
-      'B','B',
-      'G','G',
-      'V','V',
-      'Y','Y',
-      'Qu',
-      'H',
-      'F',
-      'Z',
-      'J',
-      'Ñ',
-      'X',
-      'K',
-      'W'
+    // const letras = [
+    //   'A','A','A','A','A','A','A','A','A','A',
+    //   'E','E','E','E','E','E','E','E','E',
+    //   'O','O','O','O','O','O','O',
+    //   'S','S','S','S','S','S',
+    //   'N','N','N','N','N',
+    //   'R','R','R','R','R',
+    //   'I','I','I','I','I',
+    //   'L','L','L','L',
+    //   'D','D','D','D',
+    //   'C','C','C',
+    //   'T','T','T',
+    //   'U','U','U',
+    //   'M','M','M',
+    //   'P','P','P',
+    //   'B','B',
+    //   'G','G',
+    //   'V','V',
+    //   'Y','Y',
+    //   'Qu',
+    //   'H',
+    //   'F',
+    //   'Z',
+    //   'J',
+    //   'Ñ',
+    //   'X',
+    //   'K',
+    //   'W'
+    // ];
+
+    // Frecuencia de aparición de letras en español según Wikipedia https://es.wikipedia.org/wiki/Frecuencia_de_aparici%C3%B3n_de_letras
+    const letrasFrecuencia = [
+      { letra: 'E', frecuencia: 13.68 },
+      { letra: 'A', frecuencia: 12.53 },
+      { letra: 'O', frecuencia: 8.68 },
+      { letra: 'S', frecuencia: 7.98 },
+      { letra: 'R', frecuencia: 6.87 },
+      { letra: 'N', frecuencia: 6.71 },
+      { letra: 'I', frecuencia: 6.25 },
+      { letra: 'D', frecuencia: 5.86 },
+      { letra: 'L', frecuencia: 4.97 },
+      { letra: 'C', frecuencia: 4.68 },
+      { letra: 'T', frecuencia: 4.63 },
+      { letra: 'U', frecuencia: 3.93 },
+      { letra: 'M', frecuencia: 3.15 },
+      { letra: 'P', frecuencia: 2.51 },
+      { letra: 'B', frecuencia: 1.42 },
+      { letra: 'G', frecuencia: 1.01 },
+      { letra: 'V', frecuencia: 0.90 },
+      { letra: 'Y', frecuencia: 0.90 },
+      { letra: 'Q', frecuencia: 0.88 },
+      { letra: 'H', frecuencia: 0.70 },
+      { letra: 'F', frecuencia: 0.69 },
+      { letra: 'Z', frecuencia: 0.52 },
+      { letra: 'J', frecuencia: 0.44 },
+      { letra: 'Ñ', frecuencia: 0.31 },
+      { letra: 'X', frecuencia: 0.22 },
+      { letra: 'K', frecuencia: 0.02 },
+      { letra: 'W', frecuencia: 0.01 }
     ];
+
+    let letrasPonderadas = [];
+
+    letrasFrecuencia.forEach(item => {
+      const repeticiones = Math.round(item.frecuencia * 100);
+      for (let i = 0; i < repeticiones; i++) {
+        letrasPonderadas.push(item.letra);
+      }
+    });
 
     let minutos = 2;
     let intervalo = null;
@@ -189,7 +229,7 @@
     }
   
     function obtenerLetraAleatoria() {
-      return letras[Math.floor(Math.random() * letras.length)];
+      return letrasPonderadas[Math.floor(Math.random() * letrasPonderadas.length)];
     }
 
     function generarTablero() {
