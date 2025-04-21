@@ -67,3 +67,10 @@ body {
     align-items: center;
     gap: 20px;
   }
+  
+  .letra.seleccionada {
+    background-color: #a2d2ff;
+    border-color: #0077b6;
+    color: #023047;
+  }
+  
