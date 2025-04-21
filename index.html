@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Boggle en Español</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barriecito&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: sans-serif;
@@ -11,7 +14,25 @@
       flex-direction: column;
       align-items: center;
       padding: 2rem;
+      justify-content: center;
     }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-family: "Barriecito", system-ui;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .contenedor {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 20px;  /* Espacio entre el tablero y los controles */
+    }
+
     .tablero {
       display: grid;
       grid-template-columns: repeat(4, 60px);
@@ -19,6 +40,14 @@
       gap: 10px;
       margin-bottom: 1rem;
     }
+
+    .tablero-contenedor {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Esto centra el tablero y el botón */
+      gap: 10px; /* Espacio entre el tablero y el botón */
+    }
+
     .letra {
       display: flex;
       align-items: center;
@@ -31,25 +60,51 @@
       background: #f0f0f0;
       transform-origin: center center;
     }
+
+    #reloj {
+      font-size: 40px;
+      margin-bottom: 1rem;
+      text-align: center;  /* Centra el texto del reloj */
+      font-weight: bold;
+    }
+
     button {
       padding: 0.5rem 1rem;
       font-size: 16px;
     }
+
+    .contenedorHorizontal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
   </style>
 </head>
 <body>
 
-  <div class="tablero" id="tablero"></div>
-  <button onclick="generarTablero()">Nuevo juego</button>
+  <h1>CUADRITOS</h1>
 
-  <div style="margin: 1rem 0;">
-    <button onclick="ajustarMinutos(-1)">-</button>
-    <span id="minutos">2</span> min
-    <button onclick="ajustarMinutos(1)">+</button>
-    <button onclick="iniciarTemporizador()" id="iniciarBtn">Iniciar temporizador</button>
+    <div class="contenedor">
+      <div class="tablero-contenedor">
+        <div class="tablero" id="tablero"></div>
+        <button id="nuevoJuegoBtn" onclick="generarTablero()">Nuevo juego</button>
+      </div>
+  
+    <div>
+      <div class="contenedorHorizontal" style="margin: 1rem 0;">
+        <button onclick="ajustarMinutos(-1)">-</button>
+        <div><span id="minutos">2</span> min</div>
+        <button onclick="ajustarMinutos(1)">+</button>
+      </div>
+      <div><button onclick="iniciarTemporizador()" id="iniciarBtn">Iniciar temporizador</button></div>
+      <div><br></div>
+      <div id="reloj"></div>
+    </div>
   </div>
-  <div id="reloj" style="font-size: 24px; margin-bottom: 1rem;"></div>
   <audio id="alarma" src="alarm1.mp3" preload="auto"></audio>
+  
   
 
   <script>
