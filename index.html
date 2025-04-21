@@ -43,7 +43,36 @@
   <button onclick="generarTablero()">Nuevo juego</button>
 
   <script>
-    const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+    const letras = [
+      'A','A','A','A','A','A','A','A','A','A',
+      'E','E','E','E','E','E','E','E','E',
+      'O','O','O','O','O','O','O',
+      'S','S','S','S','S','S',
+      'N','N','N','N','N',
+      'R','R','R','R','R',
+      'I','I','I','I','I',
+      'L','L','L','L',
+      'D','D','D','D',
+      'C','C','C',
+      'T','T','T',
+      'U','U','U',
+      'M','M','M',
+      'P','P','P',
+      'B','B',
+      'G','G',
+      'V','V',
+      'Y','Y',
+      'Qu',
+      'H',
+      'F',
+      'Z',
+      'J',
+      'Ñ',
+      'X',
+      'K',
+      'W'
+];
+
     
     function obtenerLetraAleatoria() {
       return letras[Math.floor(Math.random() * letras.length)];
