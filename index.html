@@ -42,6 +42,16 @@
   <div class="tablero" id="tablero"></div>
   <button onclick="generarTablero()">Nuevo juego</button>
 
+  <div style="margin: 1rem 0;">
+    <button onclick="ajustarMinutos(-1)">-</button>
+    <span id="minutos">2</span> min
+    <button onclick="ajustarMinutos(1)">+</button>
+    <button onclick="iniciarTemporizador()" id="iniciarBtn">Iniciar temporizador</button>
+  </div>
+  <div id="reloj" style="font-size: 24px; margin-bottom: 1rem;"></div>
+  <audio id="alarma" src="alarm1.mp3" preload="auto"></audio>
+  
+
   <script>
     const letras = [
       'A','A','A','A','A','A','A','A','A','A',
@@ -71,14 +81,78 @@
       'X',
       'K',
       'W'
-];
+    ];
 
-    
+    let minutos = 2;
+    let intervalo = null;
+
+    function ajustarMinutos(cambio) {
+      minutos = Math.max(1, minutos + cambio);
+      document.getElementById("minutos").textContent = minutos;
+    }
+
+    function iniciarTemporizador() {
+      clearInterval(intervalo);
+
+      // Desactivar botones
+      document.querySelectorAll("button").forEach(btn => {
+        if (btn.textContent === "+" || btn.textContent === "-") {
+          btn.disabled = true;
+        }
+      });
+      document.getElementById("iniciarBtn").disabled = true;
+
+      const totalSegundos = minutos * 60;
+      let tiempoRestante = totalSegundos;
+      const reloj = document.getElementById("reloj");
+
+      actualizarReloj(tiempoRestante);
+      intervalo = setInterval(() => {
+        tiempoRestante--;
+        if (tiempoRestante <= 0) {
+          clearInterval(intervalo);
+          reloj.textContent = "¡Tiempo!";
+          document.getElementById("alarma").play();
+
+          // Rehabilitar botones
+      document.querySelectorAll("button").forEach(btn => {
+        if (btn.textContent === "+" || btn.textContent === "-") {
+          btn.disabled = false;
+        }
+      });
+        } else {
+          actualizarReloj(tiempoRestante);
+        }
+      }, 1000);
+    }
+
+    function actualizarReloj(segundos) {
+      const m = Math.floor(segundos / 60);
+      const s = segundos % 60;
+      document.getElementById("reloj").textContent =
+        `${m}:${s.toString().padStart(2, "0")}`;
+    }
+  
     function obtenerLetraAleatoria() {
       return letras[Math.floor(Math.random() * letras.length)];
     }
 
     function generarTablero() {
+      // Reiniciar el temporizador si hay uno activo
+      clearInterval(intervalo);
+      intervalo = null;
+
+      // Rehabilitar el botón "Iniciar temporizador"
+      document.getElementById("iniciarBtn").disabled = false;
+
+      // Rehabilitar los botones de ajuste de tiempo
+      document.querySelectorAll("button").forEach(btn => {
+        if (btn.textContent === "+" || btn.textContent === "-") {
+          btn.disabled = false;
+        }
+      });
+
+      // Generar tablero
       const tablero = document.getElementById("tablero");
       tablero.innerHTML = "";
 
@@ -90,6 +164,8 @@
         div.textContent = obtenerLetraAleatoria();
         tablero.appendChild(div);
       }
+
+      document.getElementById("reloj").textContent = '';
     }
 
     // Generar uno inicial
