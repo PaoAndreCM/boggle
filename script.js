@@ -68,30 +68,19 @@
 //   }
 // });
 
+let palabrasValidas = [];
+
+fetch('palabras.json')
+  .then(res => res.json())
+  .then(data => {
+    palabrasValidas = data;
+  });
+
 let palabraActual = [];
 let letrasSeleccionadas = [];
 let filasActual = 4;
 let columnasActual = 4;
 
-function handleLetterClick(letra, index) {
-    const letraDiv = document.querySelectorAll(".letra")[index];
-  
-    // Verificar si la letra ya ha sido seleccionada
-    if (letrasSeleccionadas.includes(letra)) {
-      // Si la letra ya está seleccionada, la quitamos
-      letrasSeleccionadas = letrasSeleccionadas.filter(l => l !== letra);
-      palabraActual = palabraActual.filter(l => l !== letra);
-      letraDiv.classList.remove("seleccionada"); // Opcional: para cambiar el estilo visual
-    } else {
-      // Si la letra no ha sido seleccionada, la agregamos
-      letrasSeleccionadas.push(letra);
-      palabraActual.push(letra);
-      letraDiv.classList.add("seleccionada"); // Opcional: para cambiar el estilo visual
-    }
-  
-    // Actualizar visualmente la palabra en la interfaz si lo deseas
-    document.getElementById("palabraActual").textContent = palabraActual.join('');
-  }
 
 function manejarSeleccion(div, index) {
     const fila = Math.floor(index / columnasActual);
@@ -105,7 +94,8 @@ function manejarSeleccion(div, index) {
         letrasSeleccionadas.length > 0 &&
         index === letrasSeleccionadas[letrasSeleccionadas.length - 1].index
       ) {
-        confirmarPalabra(); // con paréntesis, para ejecutar
+        confirmarPalabra();
+        return; 
       }
       
   
@@ -129,6 +119,9 @@ function manejarSeleccion(div, index) {
     div.classList.add("seleccionada");
     palabraActual.push(div.textContent);
     letrasSeleccionadas.push({ div, index });
+
+    document.getElementById("palabraActual").textContent = palabraActual.join('');
+
   }
   
   function confirmarPalabra() {
@@ -136,12 +129,22 @@ function manejarSeleccion(div, index) {
   
     const palabra = palabraActual.join("");
     console.log("Palabra creada:", palabra);
-  
-    // Aquí luego conecto con el diccionario y puntuación
-    // Por ahora solo mostrar
+    
+    const validezDiv = document.getElementById("validez");
+
+    if(palabrasValidas.includes(palabra.toLowerCase()) ){
+        validezDiv.textContent = "La palabra es válida";
+    } else {
+        validezDiv.textContent = "La palabra no es válida";
+    }
   
     // Reset
     reiniciarPalabra();
+  }
+
+  function actualizarPalabraEnPantalla() {
+    const palabraDiv = document.getElementById("palabraActual");
+    palabraDiv.textContent = palabraActual.join('');
   }
 
   function reiniciarPalabra() {
@@ -251,8 +254,8 @@ const letrasSeleccionadas = [
 
 // Mezclar las letras
 for (let i = letrasSeleccionadas.length - 1; i > 0; i--) {
-const j = Math.floor(Math.random() * (i + 1));
-[letrasSeleccionadas[i], letrasSeleccionadas[j]] = [letrasSeleccionadas[j], letrasSeleccionadas[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [letrasSeleccionadas[i], letrasSeleccionadas[j]] = [letrasSeleccionadas[j], letrasSeleccionadas[i]];
 }
 
     // Generar tablero
@@ -271,6 +274,7 @@ const j = Math.floor(Math.random() * (i + 1));
 
         tablero.appendChild(div);
     }
+
 
     document.getElementById("reloj").textContent = '';
 }

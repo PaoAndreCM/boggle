@@ -67,10 +67,34 @@ body {
     align-items: center;
     gap: 20px;
   }
-  
+
   .letra.seleccionada {
     background-color: #a2d2ff;
     border-color: #0077b6;
     color: #023047;
   }
+
+  #palabraActual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  #validez{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .contenedorVertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+
   
