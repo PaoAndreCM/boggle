@@ -21,22 +21,22 @@
         <button onclick="generarTablero(5, 5)">Nuevo Juego (5x5)</button>
       </div>
   
-    <div class="contenedorVertical">
-      <!-- <div class="contenedorHorizontal"> <h3>PUNTAJE: </h3> <span id="puntaje">0</span></div> -->
-      <div class="contenedorHorizontal" style="margin: 1rem 0;">
-        <button onclick="ajustarMinutos(-1)">-</button>
-        <div><span id="minutos">2</span> min</div>
-        <button onclick="ajustarMinutos(1)">+</button>
-      </div>
-      <div><button onclick="iniciarTemporizador()" id="iniciarBtn">Iniciar el Juego</button></div>
-      <div><br></div>
-      <div id="reloj"></div>
       <div class="contenedorVertical">
-        <div id="palabraActual"></div>
-        <div id="validez"></div>
-      </div>
+        <!-- <div class="contenedorHorizontal"> <h3>PUNTAJE: </h3> <span id="puntaje">0</span></div> -->
+        <div class="contenedorHorizontal" style="margin: 1rem 0;">
+          <button onclick="ajustarMinutos(-1)">-</button>
+          <div><span id="minutos">2</span> min</div>
+          <button onclick="ajustarMinutos(1)">+</button>
+        </div>
+        <div><button onclick="iniciarTemporizador()" id="iniciarBtn">Iniciar el Juego</button></div>
+        <div><br></div>
+        <div id="reloj"></div>
+        <div class="contenedorVertical">
+          <div id="palabraActual"></div>
+          <div id="validez"></div>
+        </div>
 
-    </div>
+      </div>
   </div>
   <audio id="alarma" src="alarm1.mp3" preload="auto"></audio>
 
